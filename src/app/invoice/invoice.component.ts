@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+
 import { Invoice } from '../invoice';
+import { InvoiceService } from '../invoice.service';
 
 @Component({
   selector: 'app-invoice',
@@ -11,6 +13,32 @@ export class InvoiceComponent implements OnInit {
 
   invoices: Invoice[];
 
+  constructor(private invoiceService: InvoiceService) { }
+
+  ngOnInit() {
+    this.getInvoices();
+  }
+
+  getInvoices(): void {
+    this.invoiceService.getInvoices()
+    .subscribe(invoices => this.invoices = invoices);
+  }
+
+/*
+  add(name: string): void {
+    name = name.trim();
+    if (!name) { return; }
+    this.invoiceService.addHero({ name } as Invoice)
+      .subscribe(hero => {
+        this.invoices.push(hero);
+      });
+  }
+
+  delete(invoice: Invoice): void {
+    this.invoices = this.invoices.filter(h => h !== hero);
+    this.invoiceService.deleteHero(hero).subscribe();
+  }*/
+
   invoice: Invoice = {
     id:1,
     creationDate: new Date().toLocaleDateString(),
@@ -20,10 +48,5 @@ export class InvoiceComponent implements OnInit {
   };
 
   total = this.invoice.net * (1+(this.invoice.tax/100));
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

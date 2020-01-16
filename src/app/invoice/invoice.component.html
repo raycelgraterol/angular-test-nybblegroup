@@ -1,13 +1,12 @@
+<div class="form-area">
 <form>
 	<div class="form-row">
-    <input name="id" type="hidden" [(ngModel)]="invoice.id">
-    <input name="creationDate" type="hidden" [(ngModel)]="invoice.creationDate">
 		<div class="form-group col-md-2">
-			<label for="invoiceNumber">Invoice Number</label>
+			<label>Invoice Number</label>
 			<input name="invoiceNumber" type="text" class="form-control" placeholder="00000000" [(ngModel)]="invoice.invoiceNumber">
     </div>
 			<div class="form-group col-md-2">
-				<label for="net">Net</label>
+				<label>Net</label>
 				<input name="net" type="text" class="form-control" 
         [(ngModel)]="invoice.net">
     </div>
@@ -18,7 +17,7 @@
       </select>
 		</div>
 		<div class="form-group col-md-2">
-        <label class="" for="total">Total</label>
+        <label>Total</label>
 				<input class="form-control" type="text" placeholder="Total"
         value="{{total}}" readonly>
     </div>
@@ -30,3 +29,40 @@
     </div>
   </div>
 </form>
+</div>
+<div class="invoicesList">
+  <div class="row" *ngFor="let invoice of invoices">
+    <div class="col-md-12 table-responsive">
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">{{invoice.invoice}}</th>
+          </tr>
+        </thead>
+      <tbody>
+        <tr>
+          <td>Net</td>
+          <td>{{invoice.net | currency }}</td>
+        </tr>
+        <tr>
+          <td>% Tax</td>
+          <td>{{invoice.tax + "%"  }}</td>
+        </tr>
+        <tr>
+          <td>Tax</td>
+          <td>{{invoice.net*(invoice.tax/100) | currency }}</td>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td>{{invoice.net*(1 + invoice.tax/100) | currency }}</td>
+        </tr>
+        <tr>
+          <td><button type="button" class="btn btn-danger">remove</button></td>
+          <td></td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>
