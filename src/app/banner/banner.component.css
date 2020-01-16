@@ -1,0 +1,14 @@
+div.banner{
+  text-align: center;
+  
+}
+.banner img{
+  width: auto;
+  max-height: 150px;
+}
+@media only screen and (max-width: 600px) {
+  .banner img{
+    width: 100%;
+    max-height: 150px;
+  }
+}
