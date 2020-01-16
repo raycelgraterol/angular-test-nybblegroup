@@ -1,0 +1,32 @@
+<form>
+	<div class="form-row">
+		<div class="form-group col-md-2">
+			<label for="invoiceNumber">Invoice Number</label>
+			<input type="text" class="form-control" id="invoiceNumber" placeholder="00000000">
+    </div>
+			<div class="form-group col-md-2">
+				<label for="net">Net</label>
+				<input type="text" class="form-control" id="net" placeholder="$1000">
+    </div>
+		<div class="form-group col-md-2">
+			<label for="percentTax">% Tax</label>
+			<select class="form-control" id="percentTax">
+      <option selected>Select Tax %</option>
+      <option>0.00</option>
+      <option>10.50</option>
+      <option>21.00</option>
+      <option>27.00</option>
+      </select>
+		</div>
+		<div class="form-group col-md-2">
+        <label class="" for="total">Total</label>
+				<input class="form-control" type="text" placeholder="Total" readonly>
+    </div>
+    <div class="form-group col-6 col-md-2">
+      <button type="button" class="btn btn-outline-success button-at-bottom">Add</button>
+    </div>
+    <div class="form-group col-6 col-md-2">
+      <button type="button" class="btn btn-outline-danger button-at-bottom">Clear</button>
+    </div>
+  </div>
+</form>
