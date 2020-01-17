@@ -8,6 +8,8 @@ import { BannerComponent } from './banner/banner.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { InvoiceService } from './invoice.service';
 import { MessageService } from './message.service';
+import { WeatherComponent } from './weather/weather.component';
+import { WeatherService } from './weather.service';
 
 
 @NgModule({
@@ -16,8 +18,8 @@ import { MessageService } from './message.service';
     FormsModule,
     HttpClientModule
   ],
-  declarations: [ AppComponent, BannerComponent, InvoiceComponent ],
+  declarations: [ AppComponent, BannerComponent, InvoiceComponent, WeatherComponent ],
   bootstrap:    [ AppComponent ],
-  providers: [InvoiceService, MessageService]
+  providers: [InvoiceService, MessageService, WeatherService]
 })
 export class AppModule { }

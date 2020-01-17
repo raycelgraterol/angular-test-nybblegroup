@@ -23,15 +23,14 @@ export class InvoiceComponent implements OnInit {
   invoiceModel = 
   new Invoice(Guid.create(),new Date().toLocaleDateString(),null,null,"");
 
-  invoices: Invoice[];
+  invoices: Invoice[] = [];
 
   constructor(private invoiceService: InvoiceService) { }
 
   ngOnInit() {
     this.first = true;
-    this.invoices = [];
     this.getInvoices();
-    if (window.screen.width <= 450) { // 768px portrait
+    if (window.screen.width <= 450) { // 450px portrait
       this.mobile = true;
     }else{
       this.mobile = false;
@@ -51,8 +50,7 @@ export class InvoiceComponent implements OnInit {
     this.invoices.push(this.invoiceModel as Invoice);
     let invocicesList = JSON.stringify(this.invoices);
     localStorage.setItem("invoices", invocicesList);
-    this.invoiceModel = 
-  new Invoice(Guid.create(),new Date().toLocaleDateString(),null,null,"");
+    this.invoiceModel = new Invoice(Guid.create(),new Date().toLocaleDateString(),null,null,"");
     /*this.invoiceService.addInvoice(jInvociceModel as Invoice)
       .subscribe(invoice => {
         this.invoices.push(invoice);
@@ -61,7 +59,9 @@ export class InvoiceComponent implements OnInit {
 
 
   getInvoices(): void {
-    this.invoices =  JSON.parse(localStorage.getItem("invoices")) as Invoice[];
+    if (localStorage.getItem("invoices") !== null) {
+      this.invoices = JSON.parse(localStorage.getItem("invoices")) as Invoice[];
+    }
     /*this.invoiceService.getInvoices()
     .subscribe(invoices => this.invoices = invoices);*/
   }
@@ -90,10 +90,6 @@ export class InvoiceComponent implements OnInit {
       (accumulator: number, currentValue: Invoice) => accumulator = accumulator + +currentValue.tax + +currentValue.net),
       0);
   }
-
-  
-
-  
 
   //Reset the work
   deleteWork() :void{

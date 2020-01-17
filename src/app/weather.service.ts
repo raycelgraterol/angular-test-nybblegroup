@@ -4,41 +4,28 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { Invoice } from './invoice';
 import { MessageService } from './message.service';
 
 @Injectable({ providedIn: 'root' })
-export class InvoiceService {
+export class WeatherService {
 
-  private invoicesUrl = 'https://cryptic-fortress-35445.herokuapp.com/';  // URL to web api
+  private weatherUrl = 'https://cryptic-fortress-35445.herokuapp.com/weather';  // URL to web api
 
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+  weather :any;
 
   constructor(
     private http: HttpClient,
     private messageService: MessageService) { }
 
-  /** Get Invoices */
-  getInvoices(): Observable<Invoice[]> {
-    return this.http.get<Invoice[]>(this.invoicesUrl+"invoices")
+
+  getWeatherList(): Observable<any[]> {
+    return this.http.get<any[]>(this.weatherUrl)
       .pipe(
-        tap(_ => this.log('fetched invoices')),
-        catchError(this.handleError<Invoice[]>('getInvoices', []))
+        tap(_ => this.log('fetched weather')),
+        catchError(this.handleError<any[]>('getWeatherList', []))
       );
   }
 
-
-  //////// Save methods //////////
-
-  /** POST: add a new invoice to the server */
-  addInvoice (invoice: Invoice): Observable<Invoice> {
-    return this.http.post<Invoice>(this.invoicesUrl+"invoice", invoice, this.httpOptions).pipe(
-      tap((newInvoice: Invoice) => this.log(`added invoice w/ id=${newInvoice.id}`)),
-      catchError(this.handleError<Invoice>('addInvoice'))
-    );
-  }
 
   /**
    * Handle Http operation that failed.
