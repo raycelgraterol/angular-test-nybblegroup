@@ -1,3 +1,4 @@
+<div *ngIf="first" class="sceenone">
 <div class="form-area">
 <form #invoiceForm="ngForm" (ngSubmit)="onSubmit(); invoiceForm.reset();" novalidate>
   <!-- Test values -->
@@ -48,7 +49,7 @@
   </div>
 </form>
 </div>
-<div class="invoicesList">
+<div *ngIf="mobile" class="invoicesList">
   <div class="row" *ngFor="let invoice of invoices">
     <div class="col-md-12 table-responsive">
       <table class="table table-bordered">
@@ -83,4 +84,112 @@
       </table>
     </div>
   </div>
+</div>
+<div *ngIf="!mobile" class="invoicesListMobile">
+  <div class="row">
+    <div class="col-md-12 table-responsive">
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">Net</th>
+            <th scope="col">% Tax</th>
+            <th scope="col">Tax</th>
+            <th scope="col">Total</th>
+            <th scope="col"></th>
+            
+          </tr>
+        </thead>
+      <tbody>
+        <tr *ngFor="let invoice of invoices">
+          <td scope="col">{{invoice.invoiceNumber}}</td>
+          <td>{{invoice.net | currency }}</td>
+          <td>{{invoice.tax + "%"  }}</td>
+          <td>{{invoice.net*(invoice.tax/100) | currency }}</td>
+          <td>{{invoice.net*(1 + invoice.tax/100) | currency }}</td>
+          <td><button type="button" (click)="delete(invoice)" class="btn btn-danger">remove</button></td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="row mb-4 mt-4">
+  <div class="col-12 col-md-3 offset-md-9">
+    <button type="button" (click)="process()" class="btn btn-primary btn-lg btn-block">Process And Continue</button>    
+  </div>
+</div>
+</div>
+
+<div *ngIf="second" class="screentwo">
+  <div *ngIf="mobile" class="invoicesList">
+  <div class="row" *ngFor="let invoice of invoices">
+    <div class="col-md-12 table-responsive">
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">{{invoice.invoiceNumber}}</th>
+          </tr>
+        </thead>
+      <tbody>
+        <tr>
+          <td>Net</td>
+          <td>{{invoice.net | currency }}</td>
+        </tr>
+        <tr>
+          <td>% Tax</td>
+          <td>{{invoice.tax + "%"  }}</td>
+        </tr>
+        <tr>
+          <td>Tax</td>
+          <td>{{invoice.net*(invoice.tax/100) | currency }}</td>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td>{{invoice.net*(1 + invoice.tax/100) | currency }}</td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div *ngIf="!mobile" class="invoicesListMobile">
+  <div class="row">
+    <div class="col-md-12 table-responsive">
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">Net</th>
+            <th scope="col">% Tax</th>
+            <th scope="col">Tax</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+      <tbody>
+        <tr *ngFor="let invoice of invoices">
+          <td scope="col">{{invoice.invoiceNumber}}</td>
+          <td>{{invoice.net | currency }}</td>
+          <td>{{invoice.tax + "%"  }}</td>
+          <td>{{invoice.net*(invoice.tax/100) | currency }}</td>
+          <td>{{invoice.net*(1 + invoice.tax/100) | currency }}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="table-success"> Total Net: <strong>{{sumNet | currency}}</strong>  </td>
+          <td></td>
+          <td class="table-success"> Total Tax: <strong>{{sumTax | currency}}</strong>  </td>
+          <td class="table-success"> Total Invoices: <strong>{{sumInvoices | currency}}</strong>  </td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="row mb-4 mt-4">
+  <div class="col-12 col-md-3 offset-md-9">
+    <button type="button" (click)="deleteWork()" class="btn btn-danger btn-lg btn-block">Delete Work</button>    
+  </div>
+</div>
 </div>

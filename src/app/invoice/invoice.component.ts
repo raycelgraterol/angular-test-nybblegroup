@@ -13,6 +13,12 @@ export class InvoiceComponent implements OnInit {
   taxes = [0.00,10.50,21.00,27.00];
   taxHasError = true;
   submitted = false;
+  mobile = false;
+  first = false;
+  second = false;
+  sumNet: number;
+  sumTax: number;
+  sumInvoices: number;
 
   invoiceModel = 
   new Invoice(Guid.create(),new Date().toLocaleDateString(),null,null,"");
@@ -22,8 +28,14 @@ export class InvoiceComponent implements OnInit {
   constructor(private invoiceService: InvoiceService) { }
 
   ngOnInit() {
+    this.first = true;
     this.invoices = [];
     this.getInvoices();
+    if (window.screen.width <= 450) { // 768px portrait
+      this.mobile = true;
+    }else{
+      this.mobile = false;
+    }
   }
   
   validateTax(value){
@@ -35,7 +47,6 @@ export class InvoiceComponent implements OnInit {
   }
 
   onSubmit(){
-
     this.submitted = true;
     this.invoices.push(this.invoiceModel as Invoice);
     let invocicesList = JSON.stringify(this.invoices);
@@ -65,14 +76,30 @@ export class InvoiceComponent implements OnInit {
     this.invoiceModel = new Invoice(Guid.create(),new Date().toLocaleDateString(),null,null,"");
   }
 
-  invoice: Invoice = {
-    id:1,
-    creationDate: new Date().toLocaleDateString(),
-    invoiceNumber: 100,
-    net: 100,
-    tax: 21.00
-  };
+  //Process and Continue
+  process() :void{
+    this.first = false;
+    this.second = true;
+    this.sumNet = this.invoices.reduce((
+      (accumulator: number, currentValue: Invoice) => accumulator = accumulator + +currentValue.net),
+      0);
+    this.sumTax = this.invoices.reduce((
+      (accumulator: number, currentValue: Invoice) => accumulator = accumulator + +currentValue.tax),
+      0);
+    this.sumInvoices = this.invoices.reduce((
+      (accumulator: number, currentValue: Invoice) => accumulator = accumulator + +currentValue.tax + +currentValue.net),
+      0);
+  }
 
-  total = this.invoice.net * (1+(this.invoice.tax/100));
+  
 
+  
+
+  //Reset the work
+  deleteWork() :void{
+    this.first = true;
+    this.second = false;
+    this.invoices = [];
+    localStorage.removeItem("invoices");
+  }
 }
