@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./banner.component.css']
 })
 export class BannerComponent implements OnInit {
-  imgSrc = 'https://lh4.googleusercontent.com/v-urBleFlsarZJDz7-Wpe7KNH8xtS6Et1nmrt53UV2BROtFZhjEr15F5dyGdougy0JBpzCH_BTaZqcxf_M2A=w1366-h663';
+  imgSrc = 'https://lh3.googleusercontent.com/J2dv9uxj5Oz7cghuNuLzEaPwtxZcchTtZB2uj6n7w5DVV6aO3ZFotop433P0rhIY_kThmd7TPpGEhSD1Z0vB=w1366-h663';
 
   constructor() { }
   
