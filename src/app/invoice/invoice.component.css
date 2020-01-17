@@ -11,4 +11,7 @@
   button.button-at-bottom{
     width: 90%;
   }
+  .remove-btn{
+    width: 170%;
+  }
 }
