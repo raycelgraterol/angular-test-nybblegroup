@@ -30,7 +30,15 @@ export class InvoiceService {
   }
 
 
+  //////// Save methods //////////
 
+  /** POST: add a new invoice to the server */
+  addInvoice (invoice: Invoice): Observable<Invoice> {
+    return this.http.post<Invoice>(this.invoicesUrl, invoice, this.httpOptions).pipe(
+      tap((newInvoice: Invoice) => this.log(`added invoice w/ id=${newInvoice.id}`)),
+      catchError(this.handleError<Invoice>('addInvoice'))
+    );
+  }
 
   /**
    * Handle Http operation that failed.

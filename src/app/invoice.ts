@@ -1,9 +1,9 @@
 export class Invoice  {
   constructor(
-    public id: number,
+    public id: string,
     public creationDate: string,
     public invoiceNumber: number,
     public net: number,
-    public tax: number
+    public tax: any
   ){}
 }

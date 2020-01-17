@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Invoice } from '../invoice';
 import { InvoiceService } from '../invoice.service';
+import { Guid } from "guid-typescript";
 
 @Component({
   selector: 'app-invoice',
@@ -10,9 +11,10 @@ import { InvoiceService } from '../invoice.service';
 })
 export class InvoiceComponent implements OnInit {
   taxes = [0.00,10.50,21.00,27.00];
+  taxHasError = true;
 
   invoiceModel = 
-  new Invoice( 13,new Date().toLocaleDateString(),132,2000,10.5,0);
+  new Invoice( Guid.create(),new Date().toLocaleDateString(),null,null,"");
 
   invoices: Invoice[];
 
@@ -21,6 +23,22 @@ export class InvoiceComponent implements OnInit {
   ngOnInit() {
     this.getInvoices();
   }
+  
+  validateTax(value){
+    if(value === 'default'){
+      this.taxHasError = true;
+    }else{
+      this.taxHasError = false;
+    }
+  }
+
+  onSubmit(){
+    this.invoiceService.addInvoice(this.invoiceModel as Invoice)
+      .subscribe(invoice => {
+        this.invoices.push(invoice);
+      });
+  }
+
 
   getInvoices(): void {
     this.invoiceService.getInvoices()
@@ -28,15 +46,6 @@ export class InvoiceComponent implements OnInit {
   }
 
 /*
-  add(name: string): void {
-    name = name.trim();
-    if (!name) { return; }
-    this.invoiceService.addHero({ name } as Invoice)
-      .subscribe(hero => {
-        this.invoices.push(hero);
-      });
-  }
-
   delete(invoice: Invoice): void {
     this.invoices = this.invoices.filter(h => h !== hero);
     this.invoiceService.deleteHero(hero).subscribe();
