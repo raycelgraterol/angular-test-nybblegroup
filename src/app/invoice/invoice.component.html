@@ -1,28 +1,34 @@
 <div class="form-area">
-<form>
+<form #invoiceForm="ngForm">
+  <!-- Test values -->
+  <!-- {{invoiceForm.value | json}}
+  <hr />
+  {{invoiceModel | json}}
+  <hr /> -->
 	<div class="form-row">
 		<div class="form-group col-md-2">
 			<label>Invoice Number</label>
-			<input name="invoiceNumber" type="text" class="form-control" placeholder="00000000" [(ngModel)]="invoice.invoiceNumber">
+			<input required #invoiceNumber="ngModel" name="invoiceNumber" type="text" class="form-control" placeholder="00000000" 
+      [(ngModel)]="invoiceModel.invoiceNumber">
     </div>
 			<div class="form-group col-md-2">
 				<label>Net</label>
-				<input name="net" type="text" class="form-control" 
-        [(ngModel)]="invoice.net">
+				<input required #net="ngModel" name="net" type="text" class="form-control" [(ngModel)]="invoiceModel.net">
     </div>
 		<div class="form-group col-md-2">
 			<label for="percentTax">% Tax</label>
-			<select [(ngModel)]="invoice.tax" name="tax" class="form-control">
+			<select required #tax="ngModel" name="tax" class="form-control" [(ngModel)]="invoiceModel.tax">
+        <option selected>Select % Tax</option>
         <option *ngFor="let tax of taxes" [ngValue]="tax">{{tax + '%'}}</option>
       </select>
 		</div>
 		<div class="form-group col-md-2">
         <label>Total</label>
-				<input class="form-control" type="text" placeholder="Total"
-        value="{{total}}" readonly>
+				<input name="total" class="form-control" type="text" placeholder="Total" 
+        [value]="invoiceModel.net*(1 + invoiceModel.tax/100)" readonly >
     </div>
     <div class="form-group col-6 col-md-2">
-      <button type="button" class="btn btn-outline-success button-at-bottom">Add</button>
+      <button type="submit" class="btn btn-outline-success button-at-bottom">Add</button>
     </div>
     <div class="form-group col-6 col-md-2">
       <button type="button" class="btn btn-outline-danger button-at-bottom">Clear</button>

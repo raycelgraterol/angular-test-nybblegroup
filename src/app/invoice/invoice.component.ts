@@ -11,6 +11,9 @@ import { InvoiceService } from '../invoice.service';
 export class InvoiceComponent implements OnInit {
   taxes = [0.00,10.50,21.00,27.00];
 
+  invoiceModel = 
+  new Invoice( 13,new Date().toLocaleDateString(),132,2000,10.5,0);
+
   invoices: Invoice[];
 
   constructor(private invoiceService: InvoiceService) { }
