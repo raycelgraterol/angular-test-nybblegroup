@@ -1,0 +1,195 @@
+<div *ngIf="first" class="sceenone">
+<div class="form-area">
+<form #invoiceForm="ngForm" (ngSubmit)="onSubmit(); invoiceForm.reset();" novalidate>
+  <!-- Test values -->
+  <!-- {{invoiceForm.value | json}}
+  <hr />
+  {{invoiceModel | json}}
+  <hr /> -->
+	<div class="form-row">
+    <input name="id" type="hidden" [(ngModel)]="invoiceModel.id">
+    <input name="creationDate" type="hidden" [(ngModel)]="invoiceModel.creationDate">
+		<div class="form-group col-md-2">
+			<label>Invoice Number</label>
+			<input required pattern="^[0-9]*(\.[0-9]{1,4})?$" #invoiceNumber="ngModel" name="invoiceNumber" type="text" class="form-control" 
+      [class.is-invalid]="invoiceNumber.invalid && invoiceNumber.touched"
+      [(ngModel)]="invoiceModel.invoiceNumber">
+      <small class="text-danger" [class.d-none]="invoiceNumber.valid || invoiceNumber.untouched">Invoice Number is required</small>
+    </div>
+			<div class="form-group col-md-2">
+				<label>Net</label>
+				<input required pattern="^[0-9]*(\.[0-9]{1,4})?$" #net="ngModel" name="net" type="text" class="form-control" 
+        [class.is-invalid]="net.invalid && invoiceNumber.touched"
+        [(ngModel)]="invoiceModel.net">
+        <small class="text-danger" [class.d-none]="net.valid || net.untouched">Net Amount is required</small>
+    </div>
+		<div class="form-group col-md-2">
+			<label for="percentTax">% Tax</label>
+			<select #tax="ngModel" name="tax" class="form-control" 
+      (blur)="validateTax(tax.value)" (change)="validateTax(tax.value)"
+      [class.is-invalid]="taxHasError && invoiceNumber.touched"
+      [(ngModel)]="invoiceModel.tax">
+        <option value="">Select % Tax</option>
+        <option *ngFor="let tax of taxes" [ngValue]="tax">{{tax + '%'}}</option>
+      </select>
+      <small class="text-danger" [class.d-none]="!taxHasError || tax.untouched"> %Tax is required</small>
+		</div>
+		<div class="form-group col-md-2">
+        <label>Total</label>
+				<input name="total" class="form-control" type="text" placeholder="Total" 
+        [value]="(invoiceModel.net*(1 + invoiceModel.tax/100))" readonly >
+    </div>
+    <div class="form-group col-6 col-md-2">
+      <button [disabled]="invoiceForm.form.invalid || taxHasError" 
+      type="submit" class="btn btn-outline-success button-at-bottom">Add</button>
+    </div>
+    <div class="form-group col-6 col-md-2">
+      <button type="button" (click)="clearForm()" class="btn btn-outline-danger button-at-bottom">Clear</button>
+    </div>
+  </div>
+</form>
+</div>
+<div *ngIf="mobile" class="invoicesList">
+  <div class="row" *ngFor="let invoice of invoices">
+    <div class="col-md-12 table-responsive">
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">{{invoice.invoiceNumber}}</th>
+          </tr>
+        </thead>
+      <tbody>
+        <tr>
+          <td>Net</td>
+          <td>{{invoice.net | currency }}</td>
+        </tr>
+        <tr>
+          <td>% Tax</td>
+          <td>{{invoice.tax + "%"  }}</td>
+        </tr>
+        <tr>
+          <td>Tax</td>
+          <td>{{invoice.net*(invoice.tax/100) | currency }}</td>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td>{{invoice.net*(1 + invoice.tax/100) | currency }}</td>
+        </tr>
+        <tr>
+          <td><button type="button" (click)="delete(invoice)" class="btn btn-danger remove-btn">remove</button></td>
+          <td></td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div *ngIf="!mobile" class="invoicesListMobile">
+  <div class="row">
+    <div class="col-md-12 table-responsive">
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">Net</th>
+            <th scope="col">% Tax</th>
+            <th scope="col">Tax</th>
+            <th scope="col">Total</th>
+            <th scope="col"></th>
+            
+          </tr>
+        </thead>
+      <tbody>
+        <tr *ngFor="let invoice of invoices">
+          <td scope="col">{{invoice.invoiceNumber}}</td>
+          <td>{{invoice.net | currency }}</td>
+          <td>{{invoice.tax + "%"  }}</td>
+          <td>{{invoice.net*(invoice.tax/100) | currency }}</td>
+          <td>{{invoice.net*(1 + invoice.tax/100) | currency }}</td>
+          <td><button type="button" (click)="delete(invoice)" class="btn btn-danger">remove</button></td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="row mb-4 mt-4">
+  <div class="col-12 col-md-3 offset-md-9">
+    <button type="button" (click)="process()" class="btn btn-primary btn-lg btn-block">Process And Continue</button>
+  </div>
+</div>
+</div>
+
+<div *ngIf="second" class="screentwo">
+  <div *ngIf="mobile" class="invoicesList">
+  <div class="row" *ngFor="let invoice of invoices">
+    <div class="col-md-12 table-responsive">
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">{{invoice.invoiceNumber}}</th>
+          </tr>
+        </thead>
+      <tbody>
+        <tr>
+          <td>Net</td>
+          <td>{{invoice.net | currency }}</td>
+        </tr>
+        <tr>
+          <td>% Tax</td>
+          <td>{{invoice.tax + "%"  }}</td>
+        </tr>
+        <tr>
+          <td>Tax</td>
+          <td>{{invoice.net*(invoice.tax/100) | currency }}</td>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td>{{invoice.net*(1 + invoice.tax/100) | currency }}</td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div *ngIf="!mobile" class="invoicesListMobile">
+  <div class="row">
+    <div class="col-md-12 table-responsive">
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Invoice Number</th>
+            <th scope="col">Net</th>
+            <th scope="col">% Tax</th>
+            <th scope="col">Tax</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+      <tbody>
+        <tr *ngFor="let invoice of invoices">
+          <td scope="col">{{invoice.invoiceNumber}}</td>
+          <td>{{invoice.net | currency }}</td>
+          <td>{{invoice.tax + "%"  }}</td>
+          <td>{{invoice.net*(invoice.tax/100) | currency }}</td>
+          <td>{{invoice.net*(1 + invoice.tax/100) | currency }}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="table-success"> Total Net: <strong>{{sumNet | currency}}</strong>  </td>
+          <td></td>
+          <td class="table-success"> Total Tax: <strong>{{sumTax | currency}}</strong>  </td>
+          <td class="table-success"> Total Invoices: <strong>{{sumInvoices | currency}}</strong>  </td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="row mb-4 mt-4">
+  <div class="col-12 col-md-3 offset-md-9">
+    <button type="button" (click)="deleteWork()" class="btn btn-danger btn-lg btn-block">Delete Work</button>    
+  </div>
+</div>
+</div>

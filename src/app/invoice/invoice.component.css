@@ -1,0 +1,17 @@
+@media only screen and (min-width: 600px) {
+  button.button-at-bottom{
+    position: absolute;
+    right: 0;
+    width: 90%;
+    bottom: 0;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  button.button-at-bottom{
+    width: 90%;
+  }
+  .remove-btn{
+    width: 170%;
+  }
+}
